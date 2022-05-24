@@ -1,0 +1,371 @@
+import React, { useEffect, useState } from "react";
+import { Box, Container, useMediaQuery, Grid, Hidden } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { makeStyles } from "@mui/styles";
+import clsx from "clsx";
+import { Paper } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+
+const useStyles = makeStyles({
+  list: {
+    width: 250,
+    paddingTop: "70px",
+  },
+  fullList: {
+    width: "auto",
+    alignItems: "center",
+  },
+  paper: {
+    background: "#000 !important",
+    justifyContent: "space-between",
+  },
+  hover: {
+    "&:hover": {
+      color: "#EB3A5A",
+    },
+  },
+});
+
+function Navbar() {
+  const classes = useStyles();
+  const [state, setState] = useState(false);
+  const matches = useMediaQuery("(max-width:960px)");
+  const [token, setToken] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    setToken(token);
+  });
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setState({ ...state, [anchor]: open });
+  };
+  const list = (anchor) => (
+    <div
+      className={clsx(classes.list, {
+        [classes.fullList]: anchor === "top" || anchor === "bottom",
+      })}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <Box mb={5} display="flex" justifyContent="center">
+        <Box
+          fontFamily="Roboto"
+          fontWeight={300}
+          fontSize={matches ? "25px" : "30px"}
+        >
+          <Box
+            component="span"
+            fontWeight={700}
+            sx={{
+              background: "linear-gradient(90deg, #E93C51 0%, #F806EF 40.67%)",
+              backgroundClip: "text",
+              textFillColor: "transparent",
+            }}
+          >
+            AiSo{" "}
+          </Box>
+          Tracker
+        </Box>
+      </Box>
+
+      <Box mt={5} display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          justifyContent="space-evenly"
+          alignItems="center"
+          flexDirection="column"
+        >
+          {token ? (
+            <Box
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login");
+              }}
+              zIndex={1}
+              sx={{
+                background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                cursor: "pointer",
+                "&:hover": {
+                  background: "#EB3A5A",
+                },
+              }}
+              ml={1}
+              width="100px"
+              height="44px"
+              fontWeight="700"
+              borderRadius="6px"
+              fontSize="18px"
+              color="#ffffff"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              letterSpacing="1%"
+            >
+              Sign out
+            </Box>
+          ) : (
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <Box
+                zIndex={1}
+                sx={{
+                  background:
+                    "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                  cursor: "pointer",
+                  "&:hover": {
+                    background: "#EB3A5A",
+                  },
+                }}
+                ml={1}
+                width="100px"
+                height="44px"
+                fontWeight="700"
+                borderRadius="6px"
+                fontSize="18px"
+                color="#ffffff"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                letterSpacing="1%"
+              >
+                Sign In
+              </Box>
+            </Link>
+          )}
+
+          {token ? (
+            ""
+          ) : (
+            <Link
+              to="/signup"
+              style={{ textDecoration: "none", marginTop: "20px" }}
+            >
+              <Box
+                zIndex={1}
+                sx={{
+                  background:
+                    "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                  cursor: "pointer",
+                  "&:hover": {
+                    background: "#EB3A5A",
+                  },
+                }}
+                ml={1}
+                width="100px"
+                height="44px"
+                fontWeight="700"
+                borderRadius="6px"
+                fontSize="18px"
+                color="#ffffff"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                letterSpacing="1%"
+              >
+                Sign Up
+              </Box>
+            </Link>
+          )}
+        </Box>
+      </Box>
+    </div>
+  );
+
+  return (
+    <Box position="relative">
+      <Box
+        bgcolor="#000"
+        height="100px"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Container maxWidth="lg">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexBasis={matches ? "100%" : "26%"}
+            >
+              <Grid
+                container
+                direction="row"
+                justifyContent="start"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Box
+                    fontFamily="Roboto"
+                    fontWeight={300}
+                    fontSize={matches ? "25px" : "30px"}
+                  >
+                    <Box
+                      component="span"
+                      fontWeight={700}
+                      sx={{
+                        background:
+                          "linear-gradient(90deg, #E93C51 22%, #F806EF 63.67%)",
+                        backgroundClip: "text",
+                        textFillColor: "transparent",
+                      }}
+                    >
+                      AiSo{" "}
+                    </Box>
+                    Tracker
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+
+            <Box display={{ xs: "none", sm: "block" }}>
+              <Hidden mdDown>
+                <Box
+                  display="flex"
+                  justifyContent="space-evenly"
+                  alignItems="center"
+                >
+                  {token ? (
+                    <Box
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        navigate("/login");
+                      }}
+                      zIndex={1}
+                      sx={{
+                        background:
+                          "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                        cursor: "pointer",
+                        "&:hover": {
+                          background: "#EB3A5A",
+                        },
+                      }}
+                      ml={1}
+                      width="100px"
+                      height="44px"
+                      fontWeight="700"
+                      borderRadius="6px"
+                      fontSize="18px"
+                      color="#ffffff"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      letterSpacing="1%"
+                    >
+                      Sign out
+                    </Box>
+                  ) : (
+                    <Link to="/login" style={{ textDecoration: "none" }}>
+                      <Box
+                        zIndex={1}
+                        sx={{
+                          background:
+                            "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                          cursor: "pointer",
+                          "&:hover": {
+                            background: "blue",
+                          },
+                        }}
+                        ml={1}
+                        width="100px"
+                        height="44px"
+                        fontWeight="700"
+                        borderRadius="6px"
+                        fontSize="18px"
+                        color="#ffffff"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        letterSpacing="1%"
+                      >
+                        Sign In
+                      </Box>
+                    </Link>
+                  )}
+
+                  {token ? (
+                    ""
+                  ) : (
+                    <Link to="/signup" style={{ textDecoration: "none" }}>
+                      <Box
+                        zIndex={1}
+                        sx={{
+                          background:
+                            "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                          cursor: "pointer",
+                          "&:hover": {
+                            background: "#EB3A5A",
+                          },
+                        }}
+                        ml={1}
+                        width="100px"
+                        height="44px"
+                        fontWeight="700"
+                        borderRadius="6px"
+                        fontSize="18px"
+                        color="#ffffff"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        letterSpacing="1%"
+                      >
+                        Sign Up
+                      </Box>
+                    </Link>
+                  )}
+                </Box>
+              </Hidden>
+            </Box>
+            <Hidden mdUp>
+              {["left"].map((anchor) => (
+                <React.Fragment key={anchor}>
+                  <Button
+                    onClick={toggleDrawer(anchor, true)}
+                    style={{ zIndex: 1, justifyContent: "end", width: "100%" }}
+                  >
+                    <MenuIcon
+                      style={{
+                        fontSize: "38px",
+                        cursor: "pointer",
+                        color: "#fff",
+                      }}
+                    ></MenuIcon>
+                  </Button>
+                  <Paper style={{ background: "#1C0D38" }}>
+                    <SwipeableDrawer
+                      classes={{ paper: classes.paper }}
+                      anchor={anchor}
+                      open={state[anchor]}
+                      onClose={toggleDrawer(anchor, false)}
+                      onOpen={toggleDrawer(anchor, true)}
+                    >
+                      {list(anchor)}
+                    </SwipeableDrawer>
+                  </Paper>
+                </React.Fragment>
+              ))}
+            </Hidden>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+  );
+}
+
+export default Navbar;
