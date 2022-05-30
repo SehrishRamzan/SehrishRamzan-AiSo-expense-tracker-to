@@ -3,9 +3,6 @@ import { Box, Container, useMediaQuery, Grid, Hidden } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { Paper } from "@mui/material";
@@ -40,7 +37,7 @@ function Navbar() {
   useEffect(() => {
     let token = localStorage.getItem("token");
     setToken(token);
-  });
+  }, []);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
@@ -90,10 +87,7 @@ function Navbar() {
         >
           {token ? (
             <Box
-              onClick={() => {
-                localStorage.removeItem("token");
-                navigate("/login");
-              }}
+              onClick={() => {}}
               zIndex={1}
               sx={{
                 background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
@@ -114,7 +108,7 @@ function Navbar() {
               alignItems="center"
               letterSpacing="1%"
             >
-              Sign out
+              History
             </Box>
           ) : (
             <Link to="/login" style={{ textDecoration: "none" }}>
@@ -146,7 +140,35 @@ function Navbar() {
           )}
 
           {token ? (
-            ""
+            {
+              /* <Box
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login");
+              }}
+              zIndex={1}
+              sx={{
+                background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                cursor: "pointer",
+                "&:hover": {
+                  background: "#EB3A5A",
+                },
+              }}
+              ml={1}
+              width="100px"
+              height="44px"
+              fontWeight="700"
+              borderRadius="6px"
+              fontSize="18px"
+              color="#ffffff"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              letterSpacing="1%"
+            >
+              Sign out
+            </Box> */
+            }
           ) : (
             <Link
               to="/signup"
@@ -211,25 +233,31 @@ function Navbar() {
                 alignItems="center"
               >
                 <Grid item>
-                  <Box
-                    fontFamily="Roboto"
-                    fontWeight={300}
-                    fontSize={matches ? "25px" : "30px"}
+                  <Link
+                    to="/"
+                    style={{ textDecoration: "none", color: "#fff" }}
                   >
                     <Box
-                      component="span"
-                      fontWeight={700}
-                      sx={{
-                        background:
-                          "linear-gradient(90deg, #E93C51 22%, #F806EF 63.67%)",
-                        backgroundClip: "text",
-                        textFillColor: "transparent",
-                      }}
+                      fontFamily="Roboto"
+                      fontWeight={300}
+                      fontSize={matches ? "25px" : "30px"}
                     >
-                      AiSo{" "}
+                      <Box
+                        className="text-rainbow-animation"
+                        component="span"
+                        fontWeight={700}
+                        sx={{
+                          background:
+                            "linear-gradient(90deg, #E93C51 22%, #F806EF 63.67%)",
+                          backgroundClip: "text",
+                          textFillColor: "transparent",
+                        }}
+                      >
+                        AiSo{" "}
+                      </Box>
+                      Tracker
                     </Box>
-                    Tracker
-                  </Box>
+                  </Link>
                 </Grid>
               </Grid>
             </Box>
@@ -244,8 +272,7 @@ function Navbar() {
                   {token ? (
                     <Box
                       onClick={() => {
-                        localStorage.removeItem("token");
-                        navigate("/login");
+                        navigate("/allRecord");
                       }}
                       zIndex={1}
                       sx={{
@@ -268,7 +295,7 @@ function Navbar() {
                       alignItems="center"
                       letterSpacing="1%"
                     >
-                      Sign out
+                      History
                     </Box>
                   ) : (
                     <Link to="/login" style={{ textDecoration: "none" }}>
@@ -300,7 +327,34 @@ function Navbar() {
                   )}
 
                   {token ? (
-                    ""
+                    <Box
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        navigate("/login");
+                      }}
+                      zIndex={1}
+                      sx={{
+                        background:
+                          "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                        cursor: "pointer",
+                        "&:hover": {
+                          background: "#EB3A5A",
+                        },
+                      }}
+                      ml={1}
+                      width="100px"
+                      height="44px"
+                      fontWeight="700"
+                      borderRadius="6px"
+                      fontSize="18px"
+                      color="#ffffff"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      letterSpacing="1%"
+                    >
+                      Sign out
+                    </Box>
                   ) : (
                     <Link to="/signup" style={{ textDecoration: "none" }}>
                       <Box

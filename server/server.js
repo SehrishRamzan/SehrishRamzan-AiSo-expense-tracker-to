@@ -106,7 +106,21 @@ myApp.post("/addExpense", async (req, res) => {
     res.status(500).send(e.message);
   }
 });
+myApp.post("/delete", async (req, res) => {
+  let record = await Transactions.findById(req.body.id);
+  console.log(record, "student");
 
+  Transactions.findOneAndDelete({ _id: req.body.id }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("row Deleted", docs);
+    }
+  });
+  res.json({
+    msg: "deleted",
+  });
+});
 myApp.post("/getRecord", async (req, res) => {
   Transactions.find({ owner: req.body.id }, function (err, docs) {
     console.log(docs);

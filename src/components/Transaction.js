@@ -1,23 +1,41 @@
-import React, { useContext } from 'react'
+import React, { useState } from "react";
+import axios from "axios";
+import { url } from "../utils/utils";
+import Loading from "../utils/loading";
 
-// Import the Global State
-import { GlobalContext } from '../context/GlobalState';
+export const Transaction = ({ transaction, balance }) => {
+  console.log(transaction);
+  const [loading, setloading] = useState(false);
+  const sign = transaction.amount > 0 ? "+" : "-";
+  const transactionType = transaction.amount > 0 ? "plus" : "minus";
 
-export const Transaction = ({ transaction }) => {
+  return (
+    <>
+      <Loading loading={loading} />
 
-    const { delTransaction } = useContext(GlobalContext);
-
-    const sign = transaction.transactionAmount > 0 ? '+' : '-';
-    const transactionType = transaction.transactionAmount > 0 ? 'plus' : 'minus';
-
-    return (
-        <li className={transactionType}>
-            {transaction.description}
-            <span>{sign}${Math.abs(transaction.transactionAmount)}</span>
-            <button className="delete-btn"
-                    onClick={() => delTransaction(transaction.id)}>
-                X
-            </button>
-        </li>
-    )
-}
+      <li className={transactionType}>
+        {transaction.description}
+        <span>
+          {sign}${Math.abs(transaction.amount)}
+        </span>
+        <button
+          className="delete-btn"
+          onClick={async () => {
+            setloading(true);
+            const res = await axios.post(url + "/delete", {
+              id: transaction._id,
+            });
+            if (res.data.msg === "deleted") {
+              balance();
+              setloading(false);
+            } else {
+              setloading(false);
+            }
+          }}
+        >
+          X
+        </button>
+      </li>
+    </>
+  );
+};

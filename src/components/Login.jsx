@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login({ setIsAuthenticated }) {
+function Login({ setIsAuthenticated, checkSession }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [alertState, setAlertState] = useState({
@@ -71,9 +71,10 @@ function Login({ setIsAuthenticated }) {
       navigate("/");
       setAlertState({
         open: true,
-        message: `Signed in successfully`,
+        message: "Signed in successfully",
         severity: "success",
       });
+      checkSession();
     } else if (resp.data.msg === "User Not Found") {
       setAlertState({
         open: true,

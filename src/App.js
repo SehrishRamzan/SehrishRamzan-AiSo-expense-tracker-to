@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MainSection from "./components/MainSection";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import { Balance } from "./components/Balance";
-import { AccountSummary } from "./components/AccountSummary";
 import { TransactionHistory } from "./components/TransactionHistory";
 import { AddTransaction } from "./components/AddTransaction";
 import { GlobalProvider } from "./context/GlobalState";
 import { url } from "./utils/utils";
+import Loading from "./utils/loading";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [totalExpense, settotalExpense] = useState();
+  const [totalIncome, settotalIncome] = useState();
+  const [totalBalance, setTotalBalance] = useState();
+  const [record, setRecord] = useState();
+  const [loading, setloading] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
+  const checkSession = async () => {
     let token = localStorage.getItem("token");
     if (token != null) {
       try {
@@ -31,17 +33,50 @@ function App() {
         console.log(e);
       }
     }
+  };
+  const balance = async () => {
+    setloading(true);
+    let { data } = await axios.post(url + "/getRecord", { id: user._id });
+    setRecord(data);
+    let expense = 0;
+    let income = 0;
+    for (let x of data) {
+      if (x.amount > 0) {
+        income += x.amount;
+      } else {
+        expense += x.amount;
+      }
+    }
+    settotalExpense(expense);
+    settotalIncome(income);
+    setTotalBalance(expense + income);
+    setTimeout(function () {
+      setloading(false);
+    }, 1500);
+  };
+  useEffect(() => {
+    checkSession();
   }, []);
+  useEffect(() => {
+    if (user) {
+      balance();
+    }
+  }, [user]);
   return (
     <>
+      <Loading loading={loading} />
       <GlobalProvider>
         <Navbar />
         <Routes>
-          {/* <Route exact path="/" element={<MainSection />} /> */}
           <Route
             exact
             path="/login"
-            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+            element={
+              <Login
+                setIsAuthenticated={setIsAuthenticated}
+                checkSession={checkSession}
+              />
+            }
           />
           <Route exact path="/signup" element={<Signup />} />
           <Route
@@ -49,15 +84,24 @@ function App() {
             path="/"
             element={
               isAuthenticated ? (
-                <AddTransaction user={user} />
+                <AddTransaction
+                  balance={balance}
+                  totalExpense={totalExpense}
+                  totalIncome={totalIncome}
+                  user={user}
+                  totalBalance={totalBalance}
+                />
               ) : (
                 <Navigate to="/login" />
               )
             }
           />
-          <Route exact path="/allRecord" element={<TransactionHistory />} />
+          <Route
+            exact
+            path="/allRecord"
+            element={<TransactionHistory balance={balance} record={record} />}
+          />
         </Routes>
-
         <Footer />
       </GlobalProvider>
     </>

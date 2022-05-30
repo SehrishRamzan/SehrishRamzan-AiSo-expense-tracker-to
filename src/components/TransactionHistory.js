@@ -1,27 +1,23 @@
-import React, { useContext } from 'react';
+import React from "react";
+import { Box, Container } from "@mui/material";
+import { Transaction } from "./Transaction";
 
-// Import Transaction Component
-import { Transaction } from './Transaction';
-
-// Import the Global State
-import { GlobalContext } from '../context/GlobalState';
-
-export const TransactionHistory = () => {
-
-    const { transactions } = useContext(GlobalContext);
-
-    return (
-        <div>
-            <h3>
-                Transaction History
-            </h3>
-            <ul className="list">
-                {transactions.map(transaction => 
-                    (
-                    <Transaction key={transaction.id} transaction={transaction} />
-                    )
-                )}
-            </ul>
-        </div>
-    )
-}
+export const TransactionHistory = ({ record, balance }) => {
+  return (
+    <Box my={7}>
+      <Container>
+        <h3>Transaction History</h3>
+        <ul className="list">
+          {record &&
+            record.map((transaction) => (
+              <Transaction
+                key={transaction.id}
+                transaction={transaction}
+                balance={balance}
+              />
+            ))}
+        </ul>
+      </Container>
+    </Box>
+  );
+};

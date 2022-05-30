@@ -25,11 +25,11 @@ export const AccountSummary = ({ totalExpense, totalIncome }) => {
     <div className="inc-exp-container">
       <div>
         <h4>Income</h4>
-        <p className="money plus">{totalIncome}</p>
+        <p className="money plus">{totalIncome ? totalIncome : 0}</p>
       </div>
       <div>
         <h4>Expense</h4>
-        <p className="money minus">{totalExpense}</p>
+        <p className="money minus">{totalExpense ? totalExpense : 0}</p>
       </div>
     </div>
   );

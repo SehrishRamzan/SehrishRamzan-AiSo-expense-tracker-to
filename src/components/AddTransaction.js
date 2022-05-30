@@ -5,17 +5,21 @@ import { Balance } from "./Balance";
 import axios from "axios";
 import { ToastNotify } from "../utils/ToastNotify";
 import { url } from "../utils/utils";
+import Loading from "../utils/loading";
 
 // Import the Global State
 import { GlobalContext } from "../context/GlobalState";
 
-export const AddTransaction = ({ user }) => {
+export const AddTransaction = ({
+  balance,
+  totalBalance,
+  totalExpense,
+  totalIncome,
+}) => {
   const [description, setDescription] = useState("");
-  const [totalExpense, settotalExpense] = useState();
-  const [totalIncome, settotalIncome] = useState();
-  const [totalBalance, setTotalBalance] = useState();
   const [transactionAdded, settransactionAdded] = useState();
   const [transactionAmount, setTransactionAmount] = useState("");
+  const [loading, setloading] = useState(false);
   const [alertState, setAlertState] = useState({
     open: false,
     message: "",
@@ -24,6 +28,7 @@ export const AddTransaction = ({ user }) => {
   const { addTransaction } = useContext(GlobalContext);
 
   const onSubmit = async (e) => {
+    setloading(true);
     e.preventDefault();
     let token = localStorage.getItem("token");
 
@@ -50,36 +55,20 @@ export const AddTransaction = ({ user }) => {
           severity: "error",
         });
       }
+      setloading(false);
     } catch (e) {
       console.log(e.response.data);
+      setloading(false);
     }
   };
-  const balance = async () => {
-    let { data } = await axios.post(url + "/getRecord", { id: user._id });
-    console.log(data, "data");
 
-    let expense = 0;
-    let income = 0;
-    for (let x of data) {
-      if (x.amount > 0) {
-        income += x.amount;
-      } else {
-        expense += x.amount;
-      }
-    }
-    settotalExpense(expense);
-    settotalIncome(income);
-    setTotalBalance(expense + income);
-  };
-  useEffect(() => {
-    balance();
-  }, []);
   useEffect(() => {
     balance();
   }, [transactionAdded]);
 
   return (
     <Box my={7}>
+      <Loading loading={loading} />
       <ToastNotify alertState={alertState} setAlertState={setAlertState} />
       <Container>
         <Box display="flex" justifyContent="center" alignItems="center">

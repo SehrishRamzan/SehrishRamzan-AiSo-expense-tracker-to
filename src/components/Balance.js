@@ -16,7 +16,7 @@ export const Balance = ({ totalBalance }) => {
   return (
     <div>
       <h4>Current Balance</h4>
-      <h1 id="balance">${totalBalance}</h1>
+      <h1 id="balance">${totalBalance ? totalBalance : 0}</h1>
     </div>
   );
 };
