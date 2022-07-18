@@ -12,12 +12,9 @@ export const Transaction = ({ transaction, balance }) => {
   return (
     <>
       <Loading loading={loading} />
-
-      <li className={transactionType}>
+      <li className={transactionType} >
         {transaction.description}
-        <span>
-          {sign}${Math.abs(transaction.amount)}
-        </span>
+        <span style={{ float: "right" }}>{sign}${Math.abs(transaction.amount)}</span>
         <button
           className="delete-btn"
           onClick={async () => {
@@ -36,6 +33,8 @@ export const Transaction = ({ transaction, balance }) => {
           X
         </button>
       </li>
+
+
     </>
   );
 };
