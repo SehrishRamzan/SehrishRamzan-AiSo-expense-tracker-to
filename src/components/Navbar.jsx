@@ -87,7 +87,7 @@ function Navbar() {
         >
           {token ? (
             <Box
-              onClick={() => {}}
+              onClick={() => { }}
               zIndex={1}
               sx={{
                 background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
@@ -141,33 +141,7 @@ function Navbar() {
 
           {token ? (
             {
-              /* <Box
-              onClick={() => {
-                localStorage.removeItem("token");
-                navigate("/login");
-              }}
-              zIndex={1}
-              sx={{
-                background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
-                cursor: "pointer",
-                "&:hover": {
-                  background: "#EB3A5A",
-                },
-              }}
-              ml={1}
-              width="100px"
-              height="44px"
-              fontWeight="700"
-              borderRadius="6px"
-              fontSize="18px"
-              color="#ffffff"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              letterSpacing="1%"
-            >
-              Sign out
-            </Box> */
+
             }
           ) : (
             <Link
