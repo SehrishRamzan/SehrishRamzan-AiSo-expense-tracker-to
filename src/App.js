@@ -20,6 +20,7 @@ function App() {
   const [totalBalance, setTotalBalance] = useState();
   const [record, setRecord] = useState();
   const [loading, setloading] = useState(false);
+  const [status,setStatus] = useState(false)
 
   const checkSession = async () => {
     let token = localStorage.getItem("token");
@@ -66,7 +67,7 @@ function App() {
     <>
       <Loading loading={loading} />
       <GlobalProvider>
-        <Navbar />
+        <Navbar status={status} setStatus={setStatus}/>
         <Routes>
           <Route
             exact
@@ -75,6 +76,7 @@ function App() {
               <Login
                 setIsAuthenticated={setIsAuthenticated}
                 checkSession={checkSession}
+                setStatus={setStatus}
               />
             }
           />

@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { Paper } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   list: {
@@ -28,16 +28,17 @@ const useStyles = makeStyles({
   },
 });
 
-function Navbar() {
+function Navbar({status,setStatus}) {
   const classes = useStyles();
   const [state, setState] = useState(false);
   const matches = useMediaQuery("(max-width:960px)");
   const [token, setToken] = useState();
   const navigate = useNavigate();
+  const location = useLocation()
   useEffect(() => {
     let token = localStorage.getItem("token");
     setToken(token);
-  }, []);
+  }, [location,status]);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
@@ -280,7 +281,7 @@ function Navbar() {
                             "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
                           cursor: "pointer",
                           "&:hover": {
-                            background: "blue",
+                            background: "#EB3A5A",
                           },
                         }}
                         ml={1}
@@ -305,6 +306,7 @@ function Navbar() {
                       onClick={() => {
                         localStorage.removeItem("token");
                         navigate("/login");
+                        setStatus(true)
                       }}
                       zIndex={1}
                       sx={{

@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login({ setIsAuthenticated, checkSession }) {
+function Login({ setIsAuthenticated,setStatus, checkSession }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [alertState, setAlertState] = useState({
@@ -68,6 +68,7 @@ function Login({ setIsAuthenticated, checkSession }) {
     if (resp.data.msg === "User Found") {
       localStorage.setItem("token", resp.data.token);
       setIsAuthenticated(true);
+      setStatus(true)
       navigate("/");
       setAlertState({
         open: true,
