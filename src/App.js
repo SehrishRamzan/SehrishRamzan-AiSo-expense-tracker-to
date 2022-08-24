@@ -10,6 +10,8 @@ import { AddTransaction } from "./components/AddTransaction";
 import { GlobalProvider } from "./context/GlobalState";
 import { url } from "./utils/utils";
 import Loading from "./utils/loading";
+import UpdateProfile from "./components/UpdateProfile";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +29,7 @@ function App() {
     if (token != null) {
       try {
         let resp = await axios.post(url + "/checksession", { token });
+        console.log(resp.data);
         setUser(resp.data);
         setIsAuthenticated(true);
         navigate("/");
@@ -67,8 +70,10 @@ function App() {
     <>
       <Loading loading={loading} />
       <GlobalProvider>
-        <Navbar status={status} setStatus={setStatus}/>
+        <Navbar status={status} setStatus={setStatus}  user={user}/>
         <Routes>
+        <Route  path="/updateProfile" element={<UpdateProfile user={user}/>}/>
+
           <Route
             exact
             path="/login"

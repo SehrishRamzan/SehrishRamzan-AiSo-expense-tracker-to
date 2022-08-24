@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, useMediaQuery, Grid, Hidden } from "@mui/material";
+import {
+  Box,
+  Container,
+  useMediaQuery,
+  Grid,
+  Hidden,
+  Avatar,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
@@ -28,17 +37,27 @@ const useStyles = makeStyles({
   },
 });
 
-function Navbar({status,setStatus}) {
+function Navbar({ status, setStatus, user }) {
   const classes = useStyles();
   const [state, setState] = useState(false);
   const matches = useMediaQuery("(max-width:960px)");
   const [token, setToken] = useState();
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openn = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   useEffect(() => {
     let token = localStorage.getItem("token");
     setToken(token);
-  }, [location,status]);
+  }, [location, status]);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
@@ -88,7 +107,7 @@ function Navbar({status,setStatus}) {
         >
           {token ? (
             <Box
-              onClick={() => { }}
+              onClick={() => {}}
               zIndex={1}
               sx={{
                 background: "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
@@ -141,9 +160,7 @@ function Navbar({status,setStatus}) {
           )}
 
           {token ? (
-            {
-
-            }
+            {}
           ) : (
             <Link
               to="/signup"
@@ -302,36 +319,96 @@ function Navbar({status,setStatus}) {
                   )}
 
                   {token ? (
-                    <Box
-                      onClick={() => {
-                        localStorage.removeItem("token");
-                        navigate("/login");
-                        setStatus(true)
-                      }}
-                      zIndex={1}
-                      sx={{
-                        background:
-                          "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
-                        cursor: "pointer",
-                        "&:hover": {
-                          background: "#EB3A5A",
-                        },
-                      }}
-                      ml={1}
-                      width="100px"
-                      height="44px"
-                      fontWeight="700"
-                      borderRadius="6px"
-                      fontSize="18px"
-                      color="#ffffff"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      letterSpacing="1%"
-                    >
-                      Sign out
+                    <Box ml={1}>
+                      {user?.name && (
+                        <Avatar
+                          id="basic-button"
+                          aria-controls="basic-menu"
+                          aria-haspopup="true"
+                          aria-expanded={openn ? "true" : undefined}
+                          onClick={handleClick}
+                          sx={{
+                            background:
+                              "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                          }}
+                        >
+                          {user?.name.split(" ")[0][0]}
+                        </Avatar>
+                      )}
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openn}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                        sx={{
+                          "& .css-kltcmi-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper":
+                            {
+                              backgroundColor: "#111",
+                              border: "1px solid #727272",
+                            },
+                        }}
+                      >
+                        <Link
+                          to="/updateProfile"
+                          style={{ textDecoration: "none", color: "#fff" }}
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              handleClose();
+                            }}
+                            sx={{
+                              borderBottom: "1px solid #727272",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Profile Settings
+                          </MenuItem>
+                        </Link>
+                        <MenuItem
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => {
+                            localStorage.removeItem("token");
+                            navigate("/login");
+                            setStatus(true);
+                          }}
+                        >
+                          Logout
+                        </MenuItem>
+                      </Menu>
                     </Box>
                   ) : (
+                    // <Box
+                    //   onClick={() => {
+                    //     localStorage.removeItem("token");
+                    //     navigate("/login");
+                    //     setStatus(true)
+                    //   }}
+                    //   zIndex={1}
+                    //   sx={{
+                    //     background:
+                    //       "linear-gradient(90deg, #EA3B55 0%, #F808E7 100%)",
+                    //     cursor: "pointer",
+                    //     "&:hover": {
+                    //       background: "#EB3A5A",
+                    //     },
+                    //   }}
+                    //   ml={1}
+                    //   width="100px"
+                    //   height="44px"
+                    //   fontWeight="700"
+                    //   borderRadius="6px"
+                    //   fontSize="18px"
+                    //   color="#ffffff"
+                    //   display="flex"
+                    //   justifyContent="center"
+                    //   alignItems="center"
+                    //   letterSpacing="1%"
+                    // >
+                    //   Sign out
+                    // </Box>
                     <Link to="/signup" style={{ textDecoration: "none" }}>
                       <Box
                         zIndex={1}

@@ -7,7 +7,11 @@ let ExpenseSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "user",
-  },
-});
+  }, 
+},
+{
+  timestamps: true
+}
+);
 let Expenses = mongoose.model("Expense", ExpenseSchema);
 module.exports = Expenses;

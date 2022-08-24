@@ -15,7 +15,7 @@ export const TransactionHistory = ({ record, balance }) => {
       <Container>
         <h3>Transaction History</h3>
         <Box display='flex' justifyContent='end'>
-          <Button variant="contained" onClick={generatePDF} >Download as PDF</Button>
+          <Button variant="contained" onClick={generatePDF}>Download as PDF</Button>
         </Box>
         <ul className="list" id="report">
           {record &&

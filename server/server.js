@@ -128,6 +128,26 @@ myApp.post("/getRecord", async (req, res) => {
   });
 });
 
+myApp.post('/updateProfile',  async function (req, res) {
+  console.log(req.body);
+  let name = req.body.name;
+  let email = req.body.email;
+  let pass = req.body.password;
+  let contact = req.body.contact;
+
+  if (name == '') { name = req.body.name }
+  if (email == '') { email = req.body.email }
+  if (pass == '') { pass = req.body.password }
+  if (contact == '') { contact = req.body.contact }
+
+  SiteUsers.findByIdAndUpdate(req.body.id, { name, email, password: pass, contact }, function (req, res) {
+      console.log('Updated' + res)
+  })
+  res.json({
+      msg: "updated"
+  });
+});
+
 myApp.use(express.static("./server/build"));
 myApp.use(express.static("./build"));
 
